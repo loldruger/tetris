@@ -1,5 +1,6 @@
 use std::io::{self, Write};
 use super::Block;
+use super::super::renderer::{Renderer};
 
 pub struct Board {
     width: usize,
@@ -55,8 +56,8 @@ impl Board {
     }
 
     fn flush(&mut self) -> io::Result<()> {
+        io::stdout().flush()?;
         io::stdout().write_all(b"\x1B[2J\x1B[1;1H")?;
-        
         self.buffer = vec![vec![b'.'; self.width]; self.height];
 
         for i in 0..self.height {

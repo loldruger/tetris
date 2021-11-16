@@ -1,4 +1,5 @@
 mod object;
+mod renderer;
 use object::{Board, Block};
 
 use std::{thread, time};
@@ -10,7 +11,7 @@ fn main() {
         [b'#', b'#', b'#', b'.'],
         [b'.', b'.', b'.', b'.'],
         [b'.', b'.', b'.', b'.']
-    ], (0,0,0));
+    ], (0, 0, 0));
     
     board.spawn(block_t);
 
