@@ -30,9 +30,6 @@ impl Board {
             for i in 0..4 {
                 for j in 0..4 {
                     self.buffer[i][j] = block.get_shape()[i][j];
-                    self.buffer[i][j+1] = block.get_shape()[i][j];
-                    self.buffer[i][j+2] = block.get_shape()[i][j];
-                    self.buffer[i][j+3] = block.get_shape()[i][j];
                 }
             }
         }
