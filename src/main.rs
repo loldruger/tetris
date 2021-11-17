@@ -6,12 +6,14 @@ use std::{thread, time};
 
 fn main() {
     let mut board = Board::new(20, 10);
-    let block_t = Block::new([
-        [b'.', b'#', b'.', b'.'],
-        [b'#', b'#', b'#', b'.'],
-        [b'.', b'.', b'.', b'.'],
-        [b'.', b'.', b'.', b'.']
-    ], (0, 0, 0));
+    let block_t = Block::new(
+        (0, 0), [
+            [0, 1, 0, 0],
+            [1, 1, 1, 0],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0]
+        ], 
+        (0, 0, 0));
     
     board.spawn(block_t);
 
@@ -20,7 +22,8 @@ fn main() {
             a.rotate(true);
         }
 
-        board.render().ok();
+        board.update();
+        board.display();
 
         let ms = time::Duration::from_millis(1000);
         let now = time::Instant::now();

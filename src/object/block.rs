@@ -1,11 +1,12 @@
 pub struct Block {
+    position: (u32, u32),
     shape: [[u8; 4]; 4],
-    color: (u8, u8, u8)
+    color: (u8, u8, u8) //RGB
 }
 
 impl Block {
-    pub fn new(shape: [[u8; 4]; 4], color: (u8, u8, u8)) -> Self {
-        Block {shape, color}
+    pub fn new(position: (u32, u32), shape: [[u8; 4]; 4], color: (u8, u8, u8)) -> Self {
+        Block {position, shape, color}
     }
 
     pub fn get_shape(&self) -> [[u8; 4]; 4] {
@@ -14,10 +15,10 @@ impl Block {
 
     pub fn rotate(&mut self, is_clockwise: bool) {
         let mut block_rotated = [
-            [b'.', b'.', b'.', b'.'],
-            [b'.', b'.', b'.', b'.'],
-            [b'.', b'.', b'.', b'.'],
-            [b'.', b'.', b'.', b'.']
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0]
         ];
 
         for i in 0..4 {

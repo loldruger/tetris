@@ -1,12 +1,10 @@
-use std::io::{self, Write};
 use super::Block;
-use super::super::renderer::{Renderer};
 
 pub struct Board {
     width: usize,
     height: usize,
     blocks: Vec<Block>,
-    buffer: Vec<Vec<u8>>
+    data: Vec<Vec<u8>>
 }
 
 impl Board {
@@ -15,33 +13,32 @@ impl Board {
             width,
             height,
             blocks: Vec::new(),
-            buffer: Vec::new()
+            data: Vec::new()
         };
 
-        board.flush().ok();
+        board.flush();
 
         return board;
     }
 
-    pub fn render(&mut self) -> io::Result<()> {
-        self.flush()?;
+    pub fn update(&mut self) {
+        self.flush();
 
         for block in &self.blocks {
             for i in 0..4 {
                 for j in 0..4 {
-                    self.buffer[i][j] = block.get_shape()[i][j];
+                    self.data[i][j] = block.get_shape()[i][j];
                 }
             }
         }
 
-        io::stdout().write_all(
-            &self.buffer
-                .clone()
-                .into_iter()
-                .flatten()
-                .collect::<Vec<u8>>())?;
+        // io::stdout().write_all(
+        //     &self.buffer
+        //         .clone()
+        //         .into_iter()
+        //         .flatten()
+        //         .collect::<Vec<u8>>())?;
 
-        Ok(())
     }
 
     pub fn spawn(&mut self, block: Block) {
@@ -52,15 +49,23 @@ impl Board {
         self.blocks.last_mut()
     }
 
-    fn flush(&mut self) -> io::Result<()> {
-        io::stdout().flush()?;
-        io::stdout().write_all(b"\x1B[2J\x1B[1;1H")?;
-        self.buffer = vec![vec![b'.'; self.width]; self.height];
+    fn flush(&mut self) {
+        // io::stdout().flush()?;
+        // io::stdout().write_all(b"\x1B[2J\x1B[1;1H")?;
+        self.data = vec![vec![0; self.width]; self.height];
 
-        for i in 0..self.height {
-            self.buffer[i][self.width-1] = b'\n';
-        }
+        // for i in 0..self.height {
+        //     self.data[i][self.width-1] = b'\n';
+        // }
+    }
 
-        Ok(())
+    pub fn display(&self) {
+        let a = self.data
+            .clone()
+            .into_iter()
+            .flatten()
+            .collect::<Vec<u8>>();
+
+        print!("{:?}", &a);
     }
 }
