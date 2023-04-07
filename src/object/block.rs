@@ -1,19 +1,19 @@
-pub trait Placable<const N: usize> {
-    fn get_shape(&self) -> [[u8; N]; N];
+pub trait Placable<const N: usize, const M: usize> {
+    fn get_shape(&self) -> [[u8; N]; M];
     fn get_position(&self) -> (usize, usize);
     fn set_position(&mut self, pos: (usize, usize));
 
     fn rotate(&mut self, is_clockwise: bool);
 }
 
-pub struct Block<const N: usize> {
+pub struct Block<const N: usize, const M: usize> {
     position: (usize, usize),
-    shape: [[u8; N]; N],
+    shape: [[u8; N]; M],
     color: (u8, u8, u8) //RGB
 }
 
-impl<const N: usize> Placable<N> for Block<N> {
-    fn get_shape(&self) -> [[u8; N]; N] {
+impl<const N: usize, const M: usize> Placable<N, M> for Block<N, M> {
+    fn get_shape(&self) -> [[u8; N]; M] {
         self.shape
     }
 
@@ -26,14 +26,14 @@ impl<const N: usize> Placable<N> for Block<N> {
     }
 
     fn rotate(&mut self, is_clockwise: bool) {
-        let mut block_rotated = [[0; N]; N];
+        let mut block_rotated = [[0; N]; M];
 
         for i in 0..N {
-            for j in 0..N {
+            for j in 0..M {
                 if is_clockwise {
                     block_rotated[i][j] = self.shape[N-1-j][i]
                 } else {
-                    block_rotated[i][j] = self.shape[j][N-1-i]
+                    block_rotated[i][j] = self.shape[j][M-1-i]
                 }
             }
         }
@@ -42,8 +42,8 @@ impl<const N: usize> Placable<N> for Block<N> {
     }
 }
 
-impl<const N: usize> Block<N> {
-    pub fn new(position: (usize, usize), shape: [[u8; N]; N], color: (u8, u8, u8)) -> Self {
+impl<const N: usize, const M: usize> Block<N, M> {
+    pub fn new(position: (usize, usize), shape: [[u8; N]; M], color: (u8, u8, u8)) -> Self {
         Self {position, shape, color}
     }
 

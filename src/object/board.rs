@@ -1,8 +1,11 @@
+use std::io::{self, Write};
+
 use super::{Block, block::Placable};
 
 pub struct Board {
     width: usize,
     height: usize,
+    block: Option<Block<4, 4>>,
     data: Vec<Vec<u8>>
 }
 
@@ -11,6 +14,7 @@ impl Board {
         let mut board = Self {
             width,
             height,
+            block: None,
             data: Vec::new()
         };
 
@@ -39,23 +43,33 @@ impl Board {
 
     }
 
-    pub fn spawn<const N: usize>(&mut self, block: impl Placable<N>) {
+    pub fn get_current_block<'a>(&'a mut self) -> &'a mut Option<Block<4, 4>> {
+        &mut self.block
+    }
+
+    pub fn spawn<const N: usize, const M: usize>(&mut self, block: impl Placable<N, M>) {
         let shape = block.get_shape();
         let pos = block.get_position();
-        let size = shape.to_vec().len();
+        let height = shape.len();
+        let width = shape[0].len();
 
-        for i in 0..size {
-            for j in 0..size {
+        for i in 0..width {
+            for j in 0..height {
                 if shape[j][i] > 0 {
                     self.data[pos.0 + j][pos.1 + i] = shape[j][i];
                 }
             }
         }
+
+        self.block = Some(block);
     }
 
     fn flush(&mut self) {
-        // io::stdout().flush()?;
-        // io::stdout().write_all(b"\x1B[2J\x1B[1;1H")?;
+        let data_temp = self.data.clone();
+        
+        io::stdout().flush().unwrap();
+        io::stdout().write_all(b"\x1B[2J\x1B[1;1H").unwrap();
+
         self.data = vec![vec![0; self.width]; self.height];
 
         // for i in 0..self.height {
