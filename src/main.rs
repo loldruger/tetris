@@ -37,17 +37,17 @@ fn main() {
     // board.update();
     board.display();
     
-    // loop {
-    //     if let Some(a) = board.get_current_block() {
-    //         a.rotate(true);
-    //     }
+    loop {
+        // if let Some(a) = board.get_current_block() {
+        //     a.rotate(true);
+        // }
 
-    //     board.update();
-    //     board.display();
+        board.update();
+        board.display();
 
-    //     let ms = time::Duration::from_millis(1000);
-    //     let now = time::Instant::now();
+        let ms = time::Duration::from_millis(1000);
+        let now = time::Instant::now();
 
-    //     thread::sleep(ms);
-    // }
+        thread::sleep(ms);
+    }
 }

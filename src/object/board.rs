@@ -40,13 +40,15 @@ impl Board {
     }
 
     pub fn spawn<const N: usize>(&mut self, block: impl Placable<N>) {
-        let a = block.get_shape();
+        let shape = block.get_shape();
         let pos = block.get_position();
-        let size = block.get_shape().to_vec().len();
+        let size = shape.to_vec().len();
 
         for i in 0..size {
             for j in 0..size {
-                self.data[pos.0 + j][pos.1 + i] = a[j][i];
+                if shape[j][i] > 0 {
+                    self.data[pos.0 + j][pos.1 + i] = shape[j][i];
+                }
             }
         }
     }
