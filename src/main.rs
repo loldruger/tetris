@@ -15,19 +15,29 @@ fn main() {
         ], 
         (0, 0, 0));
     
+    let block_z = Block::new(
+        (0, 0), [
+            [0, 1, 1],
+            [1, 1, 0],
+            [0, 0, 0],
+        ], 
+        (0, 0, 0));
+
     board.spawn(block_t);
+    board.update();
+    board.display();
+    
+    // loop {
+    //     if let Some(a) = board.get_current_block() {
+    //         a.rotate(true);
+    //     }
 
-    loop {
-        if let Some(a) = board.get_current_block() {
-            a.rotate(true);
-        }
+    //     board.update();
+    //     board.display();
 
-        board.update();
-        board.display();
+    //     let ms = time::Duration::from_millis(1000);
+    //     let now = time::Instant::now();
 
-        let ms = time::Duration::from_millis(1000);
-        let now = time::Instant::now();
-
-        thread::sleep(ms);
-    }
+    //     thread::sleep(ms);
+    // }
 }

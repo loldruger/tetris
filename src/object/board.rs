@@ -1,18 +1,16 @@
-use super::Block;
+use super::{Block, block::Placable};
 
 pub struct Board {
     width: usize,
     height: usize,
-    blocks: Vec<Block>,
     data: Vec<Vec<u8>>
 }
 
 impl Board {
     pub fn new(width: usize, height: usize) -> Self {
-        let mut board = Board {
+        let mut board = Self {
             width,
             height,
-            blocks: Vec::new(),
             data: Vec::new()
         };
 
@@ -24,13 +22,13 @@ impl Board {
     pub fn update(&mut self) {
         self.flush();
 
-        for block in &self.blocks {
-            for i in 0..4 {
-                for j in 0..4 {
-                    self.data[i][j] = block.get_shape()[i][j];
-                }
-            }
-        }
+        // for block in &self.data {
+        //     for i in 0..4 {
+        //         for j in 0..4 {
+        //             self.data[i][j] = block.get_shape()[i][j];
+        //         }
+        //     }
+        // }
 
         // io::stdout().write_all(
         //     &self.buffer
@@ -41,12 +39,11 @@ impl Board {
 
     }
 
-    pub fn spawn(&mut self, block: Block) {
-        self.blocks.push(block);
-    }
+    pub fn spawn<const N: usize>(&mut self, block: impl Placable<N>) {
+        let a = block.get_shape().concat();
+        let pos = block.get_position();
 
-    pub fn get_current_block(&mut self) -> Option<&mut Block> {
-        self.blocks.last_mut()
+        self.data[pos.0][pos.1];
     }
 
     fn flush(&mut self) {

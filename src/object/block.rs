@@ -1,36 +1,57 @@
-pub struct Block {
-    position: (u32, u32),
-    shape: [[u8; 4]; 4],
+pub trait Placable<const N: usize> {
+    fn get_shape(&self) -> [[u8; N]; N];
+    fn get_position(&self) -> (usize, usize);
+    fn set_position(&mut self, pos: (usize, usize));
+
+    fn rotate(&mut self, is_clockwise: bool);
+}
+
+pub struct Block<const N: usize> {
+    position: (usize, usize),
+    shape: [[u8; N]; N],
     color: (u8, u8, u8) //RGB
 }
 
-impl Block {
-    pub fn new(position: (u32, u32), shape: [[u8; 4]; 4], color: (u8, u8, u8)) -> Self {
-        Block {position, shape, color}
-    }
-
-    pub fn get_shape(&self) -> [[u8; 4]; 4] {
+impl<const N: usize> Placable<N> for Block<N> {
+    fn get_shape(&self) -> [[u8; N]; N] {
         self.shape
     }
 
-    pub fn rotate(&mut self, is_clockwise: bool) {
-        let mut block_rotated = [
-            [0, 0, 0, 0],
-            [0, 0, 0, 0],
-            [0, 0, 0, 0],
-            [0, 0, 0, 0]
-        ];
+    fn get_position(&self) -> (usize, usize) {
+        self.position
+    }
 
-        for i in 0..4 {
-            for j in 0..4 {
+    fn set_position(&mut self, pos: (usize, usize)) {
+        self.position = pos;
+    }
+
+    fn rotate(&mut self, is_clockwise: bool) {
+        let mut block_rotated = [[0; N]; N];
+
+        for i in 0..N {
+            for j in 0..N {
                 if is_clockwise {
-                    block_rotated[i][j] = self.shape[3-j][i]
+                    block_rotated[i][j] = self.shape[N-1-j][i]
                 } else {
-                    block_rotated[i][j] = self.shape[j][3-i]
+                    block_rotated[i][j] = self.shape[j][N-1-i]
                 }
             }
         }
 
         self.shape = block_rotated;
+    }
+}
+
+impl<const N: usize> Block<N> {
+    pub fn new(position: (usize, usize), shape: [[u8; N]; N], color: (u8, u8, u8)) -> Self {
+        Self {position, shape, color}
+    }
+
+    pub fn get_color(&self) -> (u8, u8, u8) {
+        self.color
+    }
+
+    pub fn set_color(&mut self, color: (u8, u8, u8)) {
+        self.color = color;
     }
 }
