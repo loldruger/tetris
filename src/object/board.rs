@@ -40,10 +40,15 @@ impl Board {
     }
 
     pub fn spawn<const N: usize>(&mut self, block: impl Placable<N>) {
-        let a = block.get_shape().concat();
+        let a = block.get_shape();
         let pos = block.get_position();
+        let size = block.get_shape().to_vec().len();
 
-        self.data[pos.0][pos.1];
+        for i in 0..size {
+            for j in 0..size {
+                self.data[pos.0 + j][pos.1 + i] = a[j][i];
+            }
+        }
     }
 
     fn flush(&mut self) {
@@ -57,12 +62,17 @@ impl Board {
     }
 
     pub fn display(&self) {
-        let a = self.data
-            .clone()
-            .into_iter()
-            .flatten()
-            .collect::<Vec<u8>>();
+        // let a = self.data
+        //     .clone()
+        //     .into_iter()
+        //     .flatten()
+        //     .collect::<Vec<u8>>();
 
-        print!("{:?}", &a);
+        for i in 0..self.height {
+            print!("\n");
+            for j in 0..self.width {
+                print!("{}", self.data[i][j]);
+            }
+        }
     }
 }

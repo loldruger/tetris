@@ -5,26 +5,36 @@ use object::{Board, Block};
 use std::{thread, time};
 
 fn main() {
-    let mut board = Board::new(20, 10);
-    let block_t = Block::new(
+    let mut board = Board::new(10, 20);
+    let block_l = Block::new(
         (0, 0), [
-            [0, 1, 0, 0],
-            [1, 1, 1, 0],
+            [0, 0, 0, 0],
+            [1, 1, 1, 1],
             [0, 0, 0, 0],
             [0, 0, 0, 0]
         ], 
         (0, 0, 0));
+
+    let block_t = Block::new(
+        (2, 0), [
+            [0, 1, 0],
+            [1, 1, 1],
+            [0, 0, 0],
+        ], 
+        (0, 0, 0));
     
     let block_z = Block::new(
-        (0, 0), [
+        (3, 3), [
             [0, 1, 1],
             [1, 1, 0],
             [0, 0, 0],
         ], 
         (0, 0, 0));
-
+    
+    board.spawn(block_l);
     board.spawn(block_t);
-    board.update();
+    board.spawn(block_z);
+    // board.update();
     board.display();
     
     // loop {
